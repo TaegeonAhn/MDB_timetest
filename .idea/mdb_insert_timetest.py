@@ -1,7 +1,7 @@
 import pyodbc
 import time
 
-conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\타사B migration test\챠트자료\월별8.mdb;')
+conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\타사B migration test\챠트자료\월별9.mdb;')
 cursor = conn.cursor()
 
 start = time.time() #시작 시간 저장

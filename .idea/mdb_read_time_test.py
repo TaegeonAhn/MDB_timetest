@@ -11,6 +11,6 @@ cursor.execute('select * from 환자정보')
 for row in cursor.fetchall():
     print (row)
 
-
 print("time : ", time.time() - start ) #현재시간 - 시작시간 = 실행 시간
+
 conn.close()
