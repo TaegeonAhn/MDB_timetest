@@ -17,6 +17,7 @@ for i in range(0,15000):
 
     conn.commit()
 
+
 print("time : ", time.time() - start ) #현재시간 - 시작시간 = 실행 시간
 
 conn.close()
