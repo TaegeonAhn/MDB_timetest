@@ -6,10 +6,12 @@ cursor = conn.cursor()
 
 start = time.time() #시작 시간 저장
 
+cursor.execute('select  * from 환자정보')
+columns = [column[0] for column in cursor.description] # 컬럼명 출력
 
-cursor.execute('select * from 환자정보')
 
 for row in cursor.fetchall():
+    print(columns)
     print (row)
 
 

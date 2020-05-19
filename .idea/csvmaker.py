@@ -1,41 +1,24 @@
-import os
-import csv
 import pyodbc
+import csv
+import time
 
-# TEXT FILE CLEAN
-#with open('C:\Path\To\Raw.csv', 'r') as reader, open('C:\Path\To\Clean.csv', 'w') as writer:
-with open('D:\타사B migration test\새파일.csv', 'w') as writer:
-    write_csv = csv.writer(writer, lineterminator='\n')
+# MS ACCESS DB CONNECTION
+conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\타사B migration test\챠트자료\월별7.mdb;')
+cursor = conn.cursor()
 
-    for line in read_csv:
-        if len(line[1]) > 0:
-            write_csv.writerow(line)
+start = time.time() #시작 시간 저장
+str_table = '환자정보'
+cursor.execute('SELECT * FROM {}'.format(str_table));
 
-# DATABASE CONNECTION
-access_path = "C:\Path\To\Access\\DB.mdb"
-con = pyodbc.connect("DRIVER={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={};" \
-                     .format(access_path))
+# OPEN CSV AND ITERATE THROUGH RESULTS
 
-# RUN QUERY
-strSQL = "SELECT * INTO [TableName] FROM [text;HDR=Yes;FMT=Delimited(,);" + \
-         "Database=C:\Path\To\Folder].Clean.csv;"
-cur = con.cursor()
-cur.execute(strSQL)
-con.commit()
+with open('D:\타사B migration test\새파일5.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    for row in cursor.fetchall() :
 
-con.close()                            # CLOSE CONNECTION
-os.remove('C\Path\To\Clean.csv')       # DELETE CLEAN TEMP
+        writer.writerow(row)
 
-'''
-files=`find ./ -name *.accdb -o -name *.mdb`
-while read -r filename; do
-    echo "CONVERTING FILE $filename"
-    _basedir=`pwd`
-    _basename="${filename%.*}"
-    mkdir -p "$_basename"
-    cd "$_basename"
-    python3 ~/software/access2csv.py  "$_basedir/$filename" 
-    cd "$_basedir"
-    echo "REMOVE FILE $filename"
-    rm "$filename"
-    '''
+print("time : ", time.time() - start ) #현재시간 - 시작시간 = 실행 시간
+
+cursor.close()
+conn.close()
